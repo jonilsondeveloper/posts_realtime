@@ -11,6 +11,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="https://js.pusher.com/4.4/pusher.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -76,5 +78,40 @@
             @yield('content')
         </main>
     </div>
+
+    <script>
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('76620658970588ac241a', {
+            cluster: 'mt1',
+            forceTLS: true
+        });
+
+        var channel = pusher.subscribe('posts');
+        channel.bind('App\\Events\\NewPost', function(data) {
+            $("#posts_list").prepend('<li class="list-group-item"><p class="font-weight-bold"> '+data.post.text+'</p></li>');
+        });
+
+        jQuery(document).ready(function(){
+            $('#form_new_post').submit(function(){
+                // alert( "Handler for .submit() called." );
+                var dados = jQuery( this ).serialize();
+
+                jQuery.ajax({
+                    type: "POST",
+                    url: "{{ route('posts.store') }}",
+                    data: dados,
+                    // success: function( data ) {
+                    //     alert( data );
+                    // }
+                });
+
+                $('#new_post').val('');
+
+                return false;
+            });
+        });
+    </script>
 </body>
 </html>

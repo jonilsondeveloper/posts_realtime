@@ -36,9 +36,12 @@
                     <hr>
                     <br>
 
-                    @if (count($posts) > 0)
+                    <!-- @if (count($posts) > 0)
                         <ul class="list-group" id="posts_list">
                             @foreach ($posts as $post)
+                                <li class="list-group-item">
+                                    <p class="font-weight-bold">{{ $post->text }}</p>
+                                </li>
                                 <li class="list-group-item">
                                     <p class="font-weight-bold">{{ $post->text }}</p>
                                     <p class="font-italic">
@@ -52,7 +55,10 @@
                         </ul>
                     @else
                         Nenhuma mensagem salva!
-                    @endif
+                    @endif -->
+                    <ul class="list-group" id="posts_list">
+
+                    </ul>
 
                 </div>
             </div>

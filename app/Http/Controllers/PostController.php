@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Models\Post;
+use App\Events\NewPost;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -30,15 +32,31 @@ class PostController extends Controller
             'user_id' => auth()->user()->id
         ]);
 
-        if ($post)
-            return redirect()
-                        ->route('home')
-                        ->with('success', 'Sucesso!');
+        // $post_user = $this->post::find($post->id)->user;
 
-        return redirect()
-                    ->back()
-                    ->withInput()
-                    ->with('error', 'Ocorreu um erro, tente em instantes!');
+        // $post->user->name;
+
+        // $post_user = DB::table('posts')->where('id', $post->id)->with('user');
+
+        // $post_user = DB::table('posts')
+        //                 ->join('users', 'posts.user_id', '=', 'users.id')
+        //                 ->select('posts.*', 'users.name')
+        //                 ->where('posts.id', $post->id)
+        //                 ->get();
+        // dd($post_user);
+
+
+        event(new NewPost($post));
+
+        // if ($post)
+        //     return redirect()
+        //                 ->route('home')
+        //                 ->with('success', 'Sucesso!');
+
+        // return redirect()
+        //             ->back()
+        //             ->withInput()
+        //             ->with('error', 'Ocorreu um erro, tente em instantes!');
     }
 
     public function show($id) {
